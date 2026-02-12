@@ -1,0 +1,236 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: text/plain');  // Changed to text/plain instead of application/json
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $command = $input['command'] ?? '';
+    // Strict whitelist of allowed commands
+    $allowedCommands = [
+        'ls' => 'ls',
+        'cat' => 'cat',
+        'whoami' => 'whoami',
+        'date' => 'date',
+        'clear' => 'clear',
+        'help' => 'echo "Available commands:\n\nls - List directory contents\ncat - Read file contents\nwhoami - Display current user\ndate - Show current date and time\nclear - Clear terminal screen\nhelp - Show this help message"'
+    ];
+    // Extract the base command (first word)
+    $baseCommand = strtolower(trim(explode(' ', $command)[0]));
+    // Check if the command is in our whitelist
+    if (!array_key_exists($baseCommand, $allowedCommands)) {
+        echo 'Command not allowed';
+        exit;
+    }
+
+    // Initialize the full command
+    $fullCommand = $allowedCommands[$baseCommand];
+
+    // Special handling for cat command
+    if ($baseCommand === 'cat') {
+        $parts = explode(' ', $command);
+        if (count($parts) !== 2) {
+            echo 'Invalid cat command format';
+            exit;
+        }
+        // Whitelist of allowed files or directories for cat
+        $allowedFiles = [
+            '/var/www/html/secret.txt',
+            'secret.txt' // Add relative path option
+        ];
+        if (!in_array($parts[1], $allowedFiles)) {
+            echo 'File access not allowed';
+            exit;
+        }
+        // Append the file path to the command
+        $fullCommand .= ' ' . $parts[1];
+    } else {
+        // For other commands, keep any arguments that were provided
+        $commandParts = explode(' ', $command, 2);
+        if (count($commandParts) > 1) {
+            $fullCommand .= ' ' . $commandParts[1];
+        }
+    }
+
+    // Execute the command
+    $output = shell_exec($fullCommand . ' 2>&1');
+
+    // Return the raw output without JSON encoding
+    echo $output;
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="assets/favicon.ico" rel="icon" type="image/x-icon">
+<link rel="stylesheet" href="style/styling.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useless Puppy</title>
+</head>
+<body style="background-color: #282a36 ;">
+<div class="test">
+    <div class="content">
+        <div class="box">
+            <h1>
+                <span class="title title-secondary">Hi, I'm</span>
+                <span class="title title-primary">lilith and i</span>
+                <span class="title heart">&lt;3</span>
+                <span class="title linux">linux</span>
+            </h1>
+            <div>
+                <span>Hi and welcome to my website, try using the terminal
+                </span>
+            </div>
+            <div>
+                <br>
+                <span>I am:<br></span>
+                    <ul class="gay" style="margin-top: 0px; list-style-type: none; padding-left: 1em;">
+                        <li>- System Administrator</li>
+                        <li>- Hyperfixated on anything linux related</li>
+                        <li>- Autistic</li>
+                        <li>- ADHD</li>
+                        <li>- Spanish</li>
+                        <?php
+                            $cumpleanos = new DateTime("2005-11-13");
+                            $hoy = new DateTime();
+                            $annos = $hoy->diff($cumpleanos);
+                            echo "<li>- $annos->y Years old</li>";
+                        ?>
+                            <span style="font-size: 0.75em; opacity: 0.5;">13th of November</span>
+                    </ul>
+            </div>
+            <div>
+                <span>You can find me at:</span>
+                <br><br>
+                <div>
+                    <ul style="margin-top: 0px; list-style-type: none; padding-left: 1em;">
+			<li id="twitter">Github: <a href="https://github.com/Lilithbtw">Lilithbtw</a></li>
+                        <li id="discord">Discord: <a href="https://discord.com/users/155000754816417793">@lilith_btw</a></li>
+                        <li id="mail">Mail: <a href="mailto:lili.macias@proton.me">lili.macias[@]proton.me</a></li>
+                    </ul>
+                </div>
+            </div>
+        <!-- Terminal section -->
+            <div class="terminal-container">
+                <div class="terminal" id="terminal">
+                    <div id="output" class="terminal-output"></div>
+                    <div style="display: flex;">
+                        <span class="prompt">webuser@secunda:~$</span>
+                        <input type="text" class="terminal-input" id="command" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+    <footer>
+    <div class="buttons">
+        <br>
+        <p class="text">buttons!</p>
+        <div class="container">
+            <a href="https://rooot.gay">
+                <img width="88" height="31" alt="image with 2 white-pink kitten paws, one holding a trans flag. below is a trans-colored text: rooot.gay~" src="assets/rooot.gif">
+            </a>
+            <img width="88" height="31" alt="adhd" src="assets/adhd.png">
+            <a href="https://badge.les.bi">
+                <img title="trans lesbi" style="image-rendering: pixelated;" width="88" height="31" src="https://badge.les.bi/88x31/trans/lesbi/heart-split/outset.png">
+            </a>
+            <img width="88" height="31" src="assets/acab.gif" alt="ACAB button">
+            <img width="88" height="31" src="assets/anarchynow.gif" alt="Anarchy Now">
+            <div>
+                <a href="https://wiki.archlinux.org/title/Main_page">
+                    <img width="88" height="31" src="assets/archlinux.gif" alt="archlinux">
+                </a>
+                <img width="88" height="31" src="assets/lain.gif" alt="tested on firefox">
+                <a href="https://www.mozilla.org/es-ES/firefox/new/">
+                    <img width="88" height="31" src="assets/firefox4.gif" alt="tested on firefox">
+                </a>
+            </div>
+            <div>
+                <img width="88" height="31" src="assets/programmingsocks.gif" alt="always wear programming socks">
+                <img width="88" height="31" src="assets/slimesnow.png" alt="">
+                <img width="88" height="31" src="assets/twopaws.gif" alt="">
+                <img width="88" height="31" src="assets/docker.png" alt="">
+                <img width="88" height="31" src="assets/estrogen.gif" alt="">
+                <img width="88" height="31" src="assets/nginx.png" alt="Powered by nginx">
+            </div>
+        </div>
+    </div>
+    </footer>
+</div>
+<script>
+    const terminal = document.getElementById('terminal');
+    const output = document.getElementById('output');
+    const commandInput = document.getElementById('command');
+
+    const allowedCommands = ['ls', 'cat', 'whoami', 'date', 'clear', 'help'];
+
+    const helpText = `Available commands:
+
+ls - List directory contents
+cat - Read file contents
+whoami - Display current user
+date - Show current date and time
+clear - Clear terminal screen
+help - Show this help message`;
+
+    function appendOutput(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        output.appendChild(div);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    commandInput.addEventListener('keypress', async function(e) {
+        if (e.key === 'Enter') {
+            const command = this.value.trim();
+
+            // Display the command with prompt
+            appendOutput(`webuser@secunda:~$ ${command}`);
+
+            // Clear input
+            this.value = '';
+
+            // Handle clear command locally
+            if (command === 'clear') {
+                output.innerHTML = '';
+                return;
+            }
+
+            // Handle help command locally
+            if (command === 'help') {
+                appendOutput(helpText);
+                return;
+            }
+
+            // Check if command is allowed
+            const baseCommand = command.split(' ')[0];
+            if (!allowedCommands.includes(baseCommand)) {
+                appendOutput('Command not found or not allowed');
+                return;
+            }
+
+            try {
+                // Send command to server
+                const response = await fetch(window.location.href, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ command: command })
+                });
+
+                const result = await response.text();
+                appendOutput(result);
+            } catch (error) {
+                appendOutput('Error executing command');
+            }
+        }
+    });
+
+    // Initial message
+    appendOutput('Welcome to lilith\'s terminal! Type "help" to see available commands.');
+</script>
+</body>
+</html>

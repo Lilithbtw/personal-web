@@ -1,0 +1,119 @@
+    @font-face {
+        font-family: VCR-JP;
+        src: url(../fonts/vcr-jp.ttf);
+    }
+    * {
+        font-family: 'VCR-JP', sans-serif;
+    }
+
+    /* Terminal styles */
+    .terminal-container {
+        margin-top: 2em;
+        max-width: 800px;
+        min-width: 800px;
+        max-height: 300px;
+    }    
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .terminal {
+        background: #1e1e1e !important;
+        color: #50fa7b;
+        padding: 20px;
+        height: 150px;
+        overflow-y: auto;
+        border-radius: 5px;
+        border: 2px solid #50fa7b;
+    }
+
+    .terminal-output {
+        background-color: #1e1e1e !important;
+        white-space: pre-wrap;
+        margin: 0;
+        padding: 0;
+    }
+
+    .prompt {
+        background-color: #1e1e1e !important;
+        color: #50fa7b;
+    }
+
+    p {
+        color: #F8F8F2;
+        
+    }
+
+    h1 {
+        color: #F8F8F2;
+        text-align: center; /* Apply center alignment globally */
+
+    }
+
+    span {
+        color: #F8F8F2;
+        text-align: center; /* Apply center alignment globally */
+
+    }
+    
+    li {
+        color: #F8F8F2;
+    }
+
+    .heart {
+        color: #f38ba8;
+    }
+
+    footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+    }
+
+    a {
+        text-decoration: none;
+        color: #FFF;
+    }
+
+    
+    .box {
+        padding: 1%;
+        background-color: #1e1e1e;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 15px;
+        border-color: #F8F8F2;
+        
+    }
+
+    .terminal-input {
+        background-color: #1e1e1e !important;
+        background: transparent;
+        border: none;
+        color: #50fa7b;
+        font-family: 'VCR-JP', monospace;
+        width: 80%;
+        outline: none;
+        margin-left: 10px;
+    }
+
+    .buttons {
+        text-align: center; /* Keep specific alignment here for buttons if needed */
+    }
+
+    #twitter {
+        color: #8BE9FD;
+    }
+
+    #discord {
+        color: #BD93F9;
+    }
+
+    #mail {
+        color: #FF5555;
+    }
