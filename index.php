@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Initialize the full command
-    $fullCommand = $allowedCommands[$baseCommand];
+$fullCommand = $allowedCommands[$baseCommand];
 
     // Special handling for cat command
     if ($baseCommand === 'cat') {
@@ -31,28 +31,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo 'Invalid cat command format';
             exit;
         }
-        // Whitelist of allowed files or directories for cat
+        
+        // Whitelist of allowed files
         $allowedFiles = [
             '/var/www/html/secret.txt',
-            'secret.txt' // Add relative path option
+            'secret.txt' 
         ];
+        
         if (!in_array($parts[1], $allowedFiles)) {
             echo 'File access not allowed';
             exit;
         }
-        // Append the file path to the command
+        // Append the safely verified file path
         $fullCommand .= ' ' . $parts[1];
-    } else {
-        // For other commands, keep any arguments that were provided
-        $commandParts = explode(' ', $command, 2);
-        if (count($commandParts) > 1) {
-            $fullCommand .= ' ' . $commandParts[1];
-        }
     }
-
     // Execute the command
     $output = shell_exec($fullCommand . ' 2>&1');
-
+	
     // Return the raw output without JSON encoding
     echo $output;
     exit;
